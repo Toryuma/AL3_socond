@@ -1,19 +1,63 @@
 #include "GameScene.h"
+#include "AxisIndicator.h"
+#include "ImGuiManager.h"
 #include "TextureManager.h"
 #include <cassert>
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete model_;
+	delete player_;
+	delete debugCamera_;
+	delete enemy_;
+}
 
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	texHandlePlayer_ = TextureManager::Load("./Resources/megaMan.jpg");
+	texhandleEnemy_ = TextureManager::Load("./Resources/airMan.jpg");
+
+	model_ = Model::Create();
+	viewProjection_.Initialize();
+	player_ = new Player();
+	player_->Initialize(model_, texHandlePlayer_);
+	enemy_ = new Enemy();
+	enemy_->Initialize(model_, texhandleEnemy_);
+
+	debugCamera_ = new DebugCamera(1000, 440);
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	enemy_->SetPlayer(player_);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	player_->Update();
+	debugCamera_->Update();
+
+	enemy_->Update();
+
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_SPACE)) {
+		isDebugCameraActive_ = true;
+	}
+#endif
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.UpdateMatrix();
+	}
+}
 
 void GameScene::Draw() {
 
@@ -40,6 +84,11 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
+	player_->Draw(viewProjection_);
+
+	if (enemy_ != nullptr) {
+		enemy_->Draw(viewProjection_);
+	}
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理
