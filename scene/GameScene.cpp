@@ -43,6 +43,8 @@ void GameScene::Update() {
 
 	enemy_->Update();
 
+	CheckAllCollisions();
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isDebugCameraActive_ = true;
@@ -57,6 +59,43 @@ void GameScene::Update() {
 	} else {
 		viewProjection_.UpdateMatrix();
 	}
+}
+
+void GameScene::CheckAllCollisions() {
+	Vector3 posA, posB;
+
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+	//完了
+#pragma region // 自キャラと敵弾の当たり判定
+
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets) {
+		// 敵弾の座標
+		posB = bullet->GetWorldPosition();
+
+		float r1 = player_->GetRadius();
+		float r2 = bullet->GetRadius();
+		// 球と球の交差判定
+		if ((posB.x-posA.x)*(posB.x-posA.x)+(posB.y-posA.y)*(posB.y-posA.y)+(posB.z-posA.z)*(posB.z-posA.z)
+			<=((r1+r2)*(r1+r2))){
+			
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+
+#pragma endregion
+
+#pragma region // 自弾と敵キャラの当たり判定
+
+#pragma endregion
+
+#pragma region // 自弾と敵弾の当たり判定
+
+#pragma endregion
 }
 
 void GameScene::Draw() {

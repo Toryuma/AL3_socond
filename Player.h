@@ -22,11 +22,18 @@ public:
 
 	~Player();
 
+	void OnCollision();
+
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
+	float GetRadius();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 	Input* input_ = nullptr;
+	const float radius_=4.0f;
 
 	/*PlayerBullet* bullet_;*/
 	std::list<PlayerBullet*> bullets_;

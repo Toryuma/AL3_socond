@@ -208,8 +208,9 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 Vector3 Add(const Vector3& v1, const Vector3& v2) {
 	return {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z};
 }
+float Subtract(const float& i1,const float& i2) { return {i1 - i2}; }
 // 減算
-Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
+Vector3 SubtractV3(const Vector3& v1, const Vector3& v2) {
 	return {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 }
 // スカラー倍
@@ -233,4 +234,8 @@ Vector3 Normalize(const Vector3& v) {
 	float length = Length(v);
 	assert(length != 0.0f);
 	return {v.x / length, v.y / length, v.z / length};
+}
+
+Vector3 SubtractOneSideVector3(const Vector3& v3, const int& va) {
+	return {v3.x - va, v3.y - va, v3.z - va};
 }

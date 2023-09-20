@@ -42,6 +42,10 @@ Vector3 Player::GetWorldPosition() {
 	return worldPos;
 }
 
+//半径のゲッター
+float Player::GetRadius() { 
+	return radius_; }
+
 void Player::Update() {
 	worldTransform_.TransferMatrix();
 
@@ -164,3 +168,5 @@ Player::~Player() {
 		delete bullet;
 	}
 }
+
+void Player::OnCollision(){};

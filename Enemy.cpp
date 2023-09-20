@@ -98,7 +98,7 @@ void Enemy::Fire() {
 	// 敵キャラのワールド座標
 	Vector3 enemyPos = GetWorldPosition();
 	// 差分ベクトルを求める
-	Vector3 differenceVelocity = Subtract(playerPos, enemyPos);
+	Vector3 differenceVelocity = SubtractV3(playerPos, enemyPos);
 	// ベクトルの正規化
 	differenceVelocity = Normalize(differenceVelocity);
 	// ベクトルの長さを早さに合わせる
@@ -121,3 +121,5 @@ Enemy::~Enemy() {
 }
 
 void Enemy::moveApproachInitialize() { fireTimer = kFireInterval; }
+
+void Enemy::OnCollision() {}

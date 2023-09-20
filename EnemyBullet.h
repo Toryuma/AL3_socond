@@ -9,7 +9,13 @@ public:
 
 	void Draw(const ViewProjection& viewProjection);
 
+	Vector3 GetWorldPosition();
+
 	bool IsDead() const { return isDead_; }
+
+	void OnCollision();
+
+	float GetRadius();
 
 private:
 	WorldTransform worldTransform_;
@@ -24,4 +30,7 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+	//半径
+	const float radius_ =4.0f;
 };

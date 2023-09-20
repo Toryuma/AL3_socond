@@ -12,6 +12,8 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
+	void OnCollision(PlayerBullet* bullet);
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
