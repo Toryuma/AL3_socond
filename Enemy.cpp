@@ -29,6 +29,8 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
+float Player::GetRadius() { return radius_; }
+
 void Enemy::Update() {
 	// worldTransform_.TransferMatrix();
 	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);*/

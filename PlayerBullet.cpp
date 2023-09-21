@@ -1,4 +1,4 @@
-#include "PlayerBullet.h"
+﻿#include "PlayerBullet.h"
 #include "MyMath.h"
 #include <cassert>
 
@@ -20,8 +20,21 @@ void PlayerBullet::Update() {
 	worldTransform_.UpdateMatrix();
 }
 
+Vector3 PlayerBullet::GetWorldPosition() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+// 半径のゲッター
+float PlayerBullet::GetRadius() { return radius_; }
+
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
-void PlayerBullet::OnCollision(PlayerBullet* bullet) { bullet->IsDead(); }
+void PlayerBullet::OnCollision() { isDead_ =true; }

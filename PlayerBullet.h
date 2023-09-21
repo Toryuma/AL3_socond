@@ -12,7 +12,11 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
-	void OnCollision(PlayerBullet* bullet);
+	void OnCollision();
+
+	Vector3 GetWorldPosition();
+
+	float GetRadius();
 
 private:
 	WorldTransform worldTransform_;
@@ -27,4 +31,6 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+	const float radius_ = 4.0f;
 };

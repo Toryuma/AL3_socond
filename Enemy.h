@@ -32,6 +32,8 @@ public:
 
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 
+	float GetRadius();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
