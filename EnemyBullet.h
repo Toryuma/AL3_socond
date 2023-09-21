@@ -31,6 +31,6 @@ private:
 	// デスフラグ
 	bool isDead_ = false;
 
-	//半径
-	const float radius_ =4.0f;
+	// 半径
+	const float radius_ = 4.0f;
 };

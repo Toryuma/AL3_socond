@@ -33,7 +33,7 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 	Input* input_ = nullptr;
-	const float radius_=4.0f;
+	const float radius_ = 4.0f;
 
 	/*PlayerBullet* bullet_;*/
 	std::list<PlayerBullet*> bullets_;

@@ -29,7 +29,7 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
-float Player::GetRadius() { return radius_; }
+float Enemy::GetRadius() { return radius_; }
 
 void Enemy::Update() {
 	// worldTransform_.TransferMatrix();

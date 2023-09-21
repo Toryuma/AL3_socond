@@ -113,6 +113,28 @@ void GameScene::CheckAllCollisions() {
 
 #pragma region // 自弾と敵弾の当たり判定
 
+	//真ん中はfor文のiのようなもの,しっかりと名前を付けること。被るとエラーが起きる。
+	for (PlayerBullet* playerBullet : playerBullets) {
+		for (EnemyBullet* enemyBullet : enemyBullets) {
+
+			//自弾の座標
+			posA = playerBullet->GetWorldPosition();
+			// 敵弾の座標
+			posB = enemyBullet->GetWorldPosition();
+
+			float r1 = playerBullet->GetRadius();
+			float r2 = enemyBullet->GetRadius();
+			// 球と球の交差判定
+			if ((posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
+			        (posB.z - posA.z) * (posB.z - posA.z) <=
+			    ((r1 + r2) * (r1 + r2))) {
+
+				enemyBullet->OnCollision();
+				playerBullet->OnCollision();
+			}
+		}
+	}
+
 #pragma endregion
 }
 

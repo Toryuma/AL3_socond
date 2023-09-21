@@ -40,6 +40,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 	Vector3 velocity_;
 	Player* player_ = nullptr;
+	const float radius_ = 4.0f;
 
 	std::list<EnemyBullet*> bullets_;
 
