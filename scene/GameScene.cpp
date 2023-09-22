@@ -11,6 +11,8 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete enemy_;
+	delete skydome_;
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -21,6 +23,7 @@ void GameScene::Initialize() {
 
 	texHandlePlayer_ = TextureManager::Load("./Resources/megaMan.jpg");
 	texhandleEnemy_ = TextureManager::Load("./Resources/airMan.jpg");
+	//texHandleSkydome_ = TextureManager::Load("./Resources/skydome/spaceLine.png");
 
 	model_ = Model::Create();
 	viewProjection_.Initialize();
@@ -28,6 +31,9 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, texHandlePlayer_);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, texhandleEnemy_);
+	
+	//modelSkydome_ = Model::Create();
+
 
 	debugCamera_ = new DebugCamera(1000, 440);
 
@@ -35,6 +41,15 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	enemy_->SetPlayer(player_);
+
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	// skydome classの生成と初期化
+	skydome_ = new Skydome;
+	skydome_ -> Initialize(modelSkydome_,texHandleSkydome_);
+
+	viewProjection_.farZ = 1200;
+	viewProjection_.Initialize();
+
 }
 
 void GameScene::Update() {
@@ -42,6 +57,7 @@ void GameScene::Update() {
 	debugCamera_->Update();
 
 	enemy_->Update();
+	skydome_->Update();
 
 	CheckAllCollisions();
 
@@ -163,12 +179,15 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 
 	if (enemy_ != nullptr) {
 		enemy_->Draw(viewProjection_);
 	}
 	/// </summary>
+
+
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

@@ -5,12 +5,13 @@
 #include "Enemy.h"
 #include "Input.h"
 #include "Model.h"
+#include "MyMath.h"
 #include "Player.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include"MyMath.h"
+#include "Skydome.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -52,6 +53,7 @@ private: // メンバ変数
 
 	uint32_t texHandlePlayer_ = 0;
 	uint32_t texhandleEnemy_ = 0;
+	uint32_t texHandleSkydome_ = 0;
 
 	Model* model_;
 	Player* player_ = nullptr;
@@ -59,6 +61,9 @@ private: // メンバ変数
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
+
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
