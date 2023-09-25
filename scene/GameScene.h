@@ -12,6 +12,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Skydome.h"
+#include "RailCamera.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -56,6 +57,7 @@ private: // メンバ変数
 	uint32_t texHandleSkydome_ = 0;
 
 	Model* model_;
+
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 
@@ -64,6 +66,8 @@ private: // メンバ変数
 
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+
+	RailCamera* railCamera_;
 
 	/// <summary>
 	/// ゲームシーン用

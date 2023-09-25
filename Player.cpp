@@ -1,7 +1,6 @@
 ﻿#include "Player.h"
 #include "ImGuiManager.h"
 #include "cassert"
-#include <Model.h>
 #include <MyMath.h>
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {

@@ -13,30 +13,34 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete skydome_;
 	delete modelSkydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
+
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	//画像読み込み
 	texHandlePlayer_ = TextureManager::Load("./Resources/megaMan.jpg");
 	texhandleEnemy_ = TextureManager::Load("./Resources/airMan.jpg");
-	//texHandleSkydome_ = TextureManager::Load("./Resources/skydome/spaceLine.png");
+	// texHandleSkydome_ = TextureManager::Load("./Resources/skydome/spaceLine.png");
 
+	//初期化泳げタイ焼きくん
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	player_ = new Player();
 	player_->Initialize(model_, texHandlePlayer_);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, texhandleEnemy_);
-	
-	//modelSkydome_ = Model::Create();
 
+	// modelSkydome_ = Model::Create();
 
 	debugCamera_ = new DebugCamera(1000, 440);
 
+	//左手フレミング表示
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
@@ -45,11 +49,14 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	// skydome classの生成と初期化
 	skydome_ = new Skydome;
-	skydome_ -> Initialize(modelSkydome_,texHandleSkydome_);
+	skydome_->Initialize(modelSkydome_, texHandleSkydome_);
 
-	viewProjection_.farZ = 1200;
+	//天球とのカメラの距離合わせ
+	viewProjection_.farZ = 1100;
 	viewProjection_.Initialize();
 
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(model_);
 }
 
 void GameScene::Update() {
@@ -60,6 +67,8 @@ void GameScene::Update() {
 	skydome_->Update();
 
 	CheckAllCollisions();
+
+	railCamera_->Update();
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
@@ -129,11 +138,11 @@ void GameScene::CheckAllCollisions() {
 
 #pragma region // 自弾と敵弾の当たり判定
 
-	//真ん中はfor文のiのようなもの,しっかりと名前を付けること。被るとエラーが起きる。
+	// 真ん中はfor文のiのようなもの,しっかりと名前を付けること。被るとエラーが起きる。
 	for (PlayerBullet* playerBullet : playerBullets) {
 		for (EnemyBullet* enemyBullet : enemyBullets) {
 
-			//自弾の座標
+			// 自弾の座標
 			posA = playerBullet->GetWorldPosition();
 			// 敵弾の座標
 			posB = enemyBullet->GetWorldPosition();
@@ -186,8 +195,6 @@ void GameScene::Draw() {
 		enemy_->Draw(viewProjection_);
 	}
 	/// </summary>
-
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

@@ -23,12 +23,8 @@ void Skydome::Initialize(Model* model, uint32_t textureHandle) {
 	// ->(アロー演算子)ポインタ変数であるクラスまたは構造体の変数に使う
 };
 
-void Skydome::Update(){
-
-	worldTransform_.UpdateMatrix();
-
-};
+void Skydome::Update() { worldTransform_.UpdateMatrix(); };
 
 void Skydome::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection); 
+	model_->Draw(worldTransform_, viewProjection);
 }
