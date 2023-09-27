@@ -18,21 +18,22 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	//画像読み込み
+	// 画像読み込み
 	texHandlePlayer_ = TextureManager::Load("./Resources/megaMan.jpg");
 	texhandleEnemy_ = TextureManager::Load("./Resources/airMan.jpg");
 	// texHandleSkydome_ = TextureManager::Load("./Resources/skydome/spaceLine.png");
 
-	//初期化泳げタイ焼きくん
+	// 初期化泳げタイ焼きくん
 	model_ = Model::Create();
 	viewProjection_.Initialize();
+
+	Vector3 playerPosition(0, 0, -4);
 	player_ = new Player();
-	player_->Initialize(model_, texHandlePlayer_);
+	player_->Initialize(model_, texHandlePlayer_, playerPosition);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, texhandleEnemy_);
 
@@ -40,7 +41,7 @@ void GameScene::Initialize() {
 
 	debugCamera_ = new DebugCamera(1000, 440);
 
-	//左手フレミング表示
+	// 左手フレミング表示
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
@@ -51,38 +52,49 @@ void GameScene::Initialize() {
 	skydome_ = new Skydome;
 	skydome_->Initialize(modelSkydome_, texHandleSkydome_);
 
-	//天球とのカメラの距離合わせ
+	// 天球とのカメラの距離合わせ
 	viewProjection_.farZ = 1100;
 	viewProjection_.Initialize();
 
 	railCamera_ = new RailCamera();
 	railCamera_->Initialize(model_);
+
+	player_->Initialize(model_, texHandlePlayer_, playerPosition);
+	// 親子関係を結ぶ 
+	railCamera_->GetWorldTransform();
+	
+	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() {
 	player_->Update();
-	debugCamera_->Update();
 
 	enemy_->Update();
 	skydome_->Update();
 
 	CheckAllCollisions();
 
-	railCamera_->Update();
-
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isDebugCameraActive_ = true;
 	}
 #endif
-	if (isDebugCameraActive_) {
+	if (isDebugCameraActive_ == true) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
 		viewProjection_.TransferMatrix();
+		// デバッグカメラを使っていない場合はレールカメラ
 	} else {
-		viewProjection_.UpdateMatrix();
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
+
+		// デバッグ以外でUpdateMatrixを呼ばないように(matrixがゴミになりゅ)
+		/*viewProjection_.UpdateMatrix();*/
 	}
 }
 

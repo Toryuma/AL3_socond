@@ -3,7 +3,7 @@
 #include "cassert"
 #include <MyMath.h>
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle,Vector3) {
 
 	assert(model);
 
@@ -142,13 +142,17 @@ void Player::Update() {
 	float playerPos[] = {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z};
-	ImGui::SliderFloat3("PlayerPos", playerPos, 30, 15);
+	ImGui::SliderFloat3("PlayerPos", playerPos, 25, -25);
 
 	worldTransform_.translation_.x = playerPos[0];
 	worldTransform_.translation_.y = playerPos[1];
 	worldTransform_.translation_.z = playerPos[2];
 	ImGui::End();
 }
+
+void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
+
+
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);

@@ -30,6 +30,7 @@ Vector3 PlayerBullet::GetWorldPosition() {
 	return worldPos;
 }
 
+
 // 半径のゲッター
 float PlayerBullet::GetRadius() { return radius_; }
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
@@ -11,26 +11,29 @@ class Player {
 
 public:
 	/// <summary>
-	/// �������B���O��������Ƃ����C��?
+	/// 初期化。お前これ消すとか正気か?
 	/// </summary>
 	/// <param name="model"></param>
 	/// <param name="textureHandle"></param>
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition);
 	/// <summary>
-	/// �U���B�󂯐g�ɉ��ȁA�Ԃ��̂߂��I�I
+	/// 攻撃。受け身に回るな、ぶちのめせ！！
 	/// </summary>
 	void Attack();
 	/// <summary>
-	/// ���E�̈ʒu���m���B�g�̒����킫�܂��悤�B
+	/// 世界の位置が知れる。身の程をわきまえよう。
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetWorldPosition();
 	/// <summary>
-	/// �X�V�B�ޏ����Ȃ���=�N��͏�ɍX�V����Ă��܂��B�ޏ���W�B
+	/// 更新。彼女いない歴=年齢は常に更新されています。彼女募集。
 	/// </summary>
+	
+	
+
 	void Update();
 	/// <summary>
-	/// �`��B�G�`����Ə����Ƃ̘b��ɈӊO�ƍ���Ȃ��B�ŏd�v�Č�
+	/// 描画。絵描けると女性との話題に意外と困らない。最重要案件
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection);
@@ -38,18 +41,20 @@ public:
 	~Player();
 
 	/// <summary>
-	/// �ڐG����BJK�ƐڐG����ƕ߂܂�
+	/// 接触判定。JKと接触すると捕まる
 	/// </summary>
 	void OnCollision();
 
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
 
-	//�֐��p�̃R�����g�A�E�g.��{�w�b�_�[�ɏ����B�X���b�V���O��œW�J
+	//関数用のコメントアウト.基本ヘッダーに書く。スラッシュ三回で展開
 	/// <summary>
-	/// ���a�̃Q�b�^�[�B���������������Ă����̂̓��b�^�[�}��
+	/// 半径のゲッター。俺が小さい時見ていたのはヤッターマン
 	/// </summary>
 	/// <returns></returns>
 	float GetRadius();
+
+	void SetParent(const WorldTransform* parent);
 
 private:
 	WorldTransform worldTransform_;

@@ -210,7 +210,7 @@ Vector3 Add(const Vector3& v1, const Vector3& v2) {
 }
 float Subtract(const float& i1,const float& i2) { return {i1 - i2}; }
 // 減算
-Vector3 SubtractV3(const Vector3& v1, const Vector3& v2) {
+Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
 	return {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 }
 // スカラー倍

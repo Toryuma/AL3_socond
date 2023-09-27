@@ -8,9 +8,14 @@
 
 class RailCamera {
 public:
-	void Initialize(Model* model, Vector3* v3);
+	void Initialize(Model* model);
 
 	void Update();
+
+	const ViewProjection& GetViewProjection() { return viewProjection_; }
+
+	// Shift+ F12,名前選択右クリック、すべての参照の検索でこの関数がどこに使われているかが出る
+	const WorldTransform& GetWorldTransform();
 
 private:
 	WorldTransform worldTransform_;
