@@ -31,9 +31,14 @@ Vector3 Enemy::GetWorldPosition() {
 
 float Enemy::GetRadius() { return radius_; }
 
+
+//移籍
 void Enemy::Update() {
+	//コア消すな
 	// worldTransform_.TransferMatrix();
 	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);*/
+
+
 	bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
 			delete bullet;
@@ -56,19 +61,21 @@ void Enemy::Update() {
 	}
 	worldTransform_.UpdateMatrix();
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	bullet->Update();
+	//}
 }
 
+//移籍
 void Enemy::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	bullet->Draw(viewProjection);
+	//}
 }
 
+//移籍
 void Enemy::moveApproach() {
 	velocity_ = {0.0f, 0.0f, -0.5f};
 	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
@@ -89,6 +96,7 @@ void Enemy::moveLeave() {
 	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 }
 
+//移籍
 void Enemy::Fire() {
 	assert(player_);
 
@@ -113,15 +121,18 @@ void Enemy::Fire() {
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-	bullets_.push_back(newBullet);
+	//bullets_.push_back(newBullet); // gameSceneのAddEnemyBulletを使いnewBulletを登録する
 }
 
+//移籍無し
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
-	}
+	}*/
 }
 
 void Enemy::moveApproachInitialize() { fireTimer = kFireInterval; }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision(){};
+
+void Enemy::SetPlayer(Player* player) { player_ = player; };

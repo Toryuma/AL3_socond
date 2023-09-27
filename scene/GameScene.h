@@ -46,31 +46,48 @@ public: // メンバ関数
 
 	void CheckAllCollisions();
 
-	
+	//弾の登録
+	void AddEnemyBullet(EnemyBullet* enemyBuullet);
+
+
+	/*void EnemyInitialize(Model* model, uint32_t textureHandle);
+	void EnemyDraw(ViewProjection& viewProjection);
+	void EnemyFire();
+	void EnemyMoveApproach();
+	void EnemyMoveLeave();
+	void EnemyMoveApproachInitialize();
+	Vector3 EnemyGetWorldPosition();
+	void EnemyOnCollision();
+	float EnemyGetRadius();
+	void EnemySetPlayer(Player* player);*/
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	ViewProjection viewProjection_;
-
+	//テクスチャ
 	uint32_t texHandlePlayer_ = 0;
 	uint32_t texhandleEnemy_ = 0;
 	uint32_t texHandleSkydome_ = 0;
-
+	//モデルデータ
 	Model* model_;
-
+	//機体
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
-
+	//デバッグ用カメラ
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-
+	//天球
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-
+	//レールカメラ
 	bool isRailCameraActive_ = false;
 	RailCamera* railCamera_=nullptr;
+
+	//nullにする意味はエラーを確認するため
+	//孤立した移籍メンバーのリスト君
+	std::list<EnemyBullet*> enemyBullets_;
 
 	/// <summary>
 	/// ゲームシーン用

@@ -12,6 +12,8 @@
 
 ********************************************************/
 
+
+#pragma region 行列初期化
 // プロトタイプ宣言
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
@@ -21,24 +23,56 @@ Matrix4x4 MakeRotateYMatrix(float radian);
 Matrix4x4 MakeRotateZMatrix(float radian);
 Matrix4x4 MakeRotateXYZMatrix(Matrix4x4& rotateX, Matrix4x4& rotateY, Matrix4x4& rotateZ);
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
-//加算(黒魔術)
+
+#pragma endregion
+
+#pragma region 四則演算基礎
+/// <summary>
+/// 加算(黒魔術(オーバーロード))
+/// </summary>
+/// <param name="v1"></param>
+/// <param name="v2"></param>
+/// <returns></returns>
 Vector3 Add(const Vector3& v1, const Vector3& v2);
-//減算
+/// <summary>
+/// 減算(黒魔術)
+/// </summary>
+/// <param name="i1"></param>
+/// <param name="i2"></param>
+/// <returns></returns>
 float Subtract(const float& i1, const float& i2);
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
-//積
+/// <summary>
+/// 積(黒魔術)
+/// </summary>
+/// <param name="scalar"></param>
+/// <param name="v"></param>
+/// <returns></returns>
 Vector3 Multiply(float scalar, const Vector3& v);
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 
-Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
-float Dot(const Vector3& v1, const Vector3& v2);
-float Length(const Vector3& v);
-Vector3 Normalize(const Vector3& v);
-//片側vector3片側変数の減算
-Vector3 SubtractOneSideVector3(const Vector3& v3, const int& va);
 /// <summary>
 /// 逆行列。大量の割り算みたいな感じ
 /// </summary>
 /// <param name="m1"></param>
 /// <returns></returns>
 Matrix4x4 Inverse(const Matrix4x4& m1);
+
+#pragma endregion
+
+#pragma region 四則演算応用
+/// <summary>
+/// クロス積
+/// </summary>
+/// <param name="v1"></param>
+/// <param name="v2"></param>
+/// <returns></returns>
+Vector3 Cross(const Vector3& v1, const Vector3& v2);
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+float Dot(const Vector3& v1, const Vector3& v2);
+float Length(const Vector3& v);
+Vector3 Normalize(const Vector3& v);
+//片側vector3片側変数の減算
+Vector3 SubtractOneSideVector3(const Vector3& v3, const int& va);
+
+#pragma endregion

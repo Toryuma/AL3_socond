@@ -14,6 +14,9 @@ GameScene::~GameScene() {
 	delete skydome_;
 	delete modelSkydome_;
 	delete railCamera_;
+	for (EnemyBullet* bullet : enemyBullets_) {
+		delete bullet;
+	};
 }
 
 void GameScene::Initialize() {
@@ -60,9 +63,9 @@ void GameScene::Initialize() {
 	railCamera_->Initialize(model_);
 
 	player_->Initialize(model_, texHandlePlayer_, playerPosition);
-	// 親子関係を結ぶ 
+	// 親子関係を結ぶ
 	railCamera_->GetWorldTransform();
-	
+
 	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
@@ -95,6 +98,7 @@ void GameScene::Update() {
 
 		// デバッグ以外でUpdateMatrixを呼ばないように(matrixがゴミになりゅ)
 		/*viewProjection_.UpdateMatrix();*/
+
 	}
 }
 
@@ -175,6 +179,11 @@ void GameScene::CheckAllCollisions() {
 #pragma endregion
 }
 
+void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
+	// リスト登録
+	enemyBullets_.push_back(enemyBullet);
+}
+
 void GameScene::Draw() {
 
 	// コマンドリストの取得
@@ -225,3 +234,94 @@ void GameScene::Draw() {
 
 #pragma endregion
 }
+/************************************
+ * 　　　　　　　　移籍隔離所
+ ************************************/
+
+//
+//void GameScene::EnemyDraw(ViewProjection& viewProjection) {
+//	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+//
+//	for (EnemyBullet* bullet : bullets_) {
+//		bullet->Draw(viewProjection);
+//	}
+//}
+//
+//void GameScene::EnemyFire() {
+//	assert(player_);
+//
+//	const float kBulletSpeed = 3.0f;
+//
+//	// 弾の速度計算
+//	// 自キャラのワールド座標
+//	Vector3 playerPos = player_->GetWorldPosition();
+//	// 敵キャラのワールド座標
+//	Vector3 enemyPos = GetWorldPosition();
+//	// 差分ベクトルを求める
+//	Vector3 differenceVelocity = Subtract(playerPos, enemyPos);
+//	// ベクトルの正規化
+//	differenceVelocity = Normalize(differenceVelocity);
+//	// ベクトルの長さを早さに合わせる
+//	Vector3 velocity = {
+//	    differenceVelocity.x * kBulletSpeed, differenceVelocity.y * kBulletSpeed,
+//	    differenceVelocity.z * kBulletSpeed};
+//
+//	/*Vector3 velocity(0, 0, kBulletSpeed);
+//	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
+//
+//	EnemyBullet* newBullet = new EnemyBullet();
+//	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+//	bullets_.push_back(newBullet);
+//}
+//
+//void GameScene::EnemyMoveApproach() {
+//	velocity_ = {0.0f, 0.0f, -0.5f};
+//	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+//	if (worldTransform_.translation_.z < 5.0f) {
+//		phase_ = Phase::Leave;
+//	}
+//
+//	/*Fire();*/
+//	fireTimer--;
+//	if (fireTimer <= 0) {
+//		Fire();
+//		fireTimer = kFireInterval;
+//	}
+//}
+//
+//void GameScene::EnemyInitialize(Model* model, uint32_t textureHandle) {
+//	assert(model);
+//
+//	model_ = model;
+//	textureHandle_ = textureHandle;
+//
+//	worldTransform_.Initialize();
+//	worldTransform_.translation_ = {0.0f, 2.0f, 200.0f};
+//	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+//	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
+//	velocity_ = {0.0f, 0.0f, 0.0f};
+//	moveApproachInitialize();
+//}
+//
+//Vector3 GameScene::EnemyGetWorldPosition() {
+//	Vector3 worldPos;
+//
+//	worldPos.x = worldTransform_.matWorld_.m[3][0];
+//	worldPos.y = worldTransform_.matWorld_.m[3][1];
+//	worldPos.z = worldTransform_.matWorld_.m[3][2];
+//
+//	return worldPos;
+//}
+//
+//float GameScene::EnemyGetRadius() { return radius_; }
+//
+//void GameScene::EnemyMoveLeave() {
+//	velocity_ = {-0.2f, 0.2f, 0.0f};
+//	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+//}
+//
+//void GameScene::EnemyMoveApproachInitialize() { Enemy::fireTimer = kFireInterval; }
+//
+//void GameScene::EnemyOnCollision(){};
+//
+//void GameScene::EnemySetPlayer(Player* player) { player_ = player; };

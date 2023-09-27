@@ -3,6 +3,7 @@
 #include <Model.h>
 class EnemyBullet {
 public:
+
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
 	void Update();
