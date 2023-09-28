@@ -7,6 +7,7 @@
 #include <list>
 
 class Player;
+class GameScene;
 //関数全引っ越し、変数はリストのみ
 
 // エラーは監督の意向によりゲームシーンに移籍とする
@@ -22,7 +23,7 @@ const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 class Enemy {
 
 public:
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, Vector3 position);
 	
 	// ロッカーは残しているよ
 	void Update();
@@ -42,6 +43,7 @@ public:
 	void moveApproachInitialize();
 
 	void SetPlayer(Player* player);
+	void SetGameScene(GameScene* gameScene);
 
 	Vector3 GetWorldPosition();
 
@@ -57,6 +59,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 	Vector3 velocity_;
 	Player* player_ = nullptr;
+	GameScene* gameScene_ = nullptr; 
 	const float radius_ = 4.0f;
 	static const int kFireInterval = 60;
 

@@ -4,15 +4,16 @@
 #include "Player.h"
 #include "cassert"
 #include <Model.h>
+#include <GameScene.h>
 
-void Enemy::Initialize(Model* model, uint32_t textureHandle) {
+void Enemy::Initialize(Model* model, uint32_t textureHandle,Vector3 position) {
 	assert(model);
 
 	model_ = model;
 	textureHandle_ = textureHandle;
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {0.0f, 2.0f, 200.0f};
+	worldTransform_.translation_ =position;
 	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 	velocity_ = {0.0f, 0.0f, 0.0f};
@@ -39,13 +40,7 @@ void Enemy::Update() {
 	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);*/
 
 
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
+
 
 	switch (phase_) {
 	case Phase::Approach:
@@ -121,6 +116,7 @@ void Enemy::Fire() {
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+	gameScene_->AddEnemyBullet(newBullet);
 	//bullets_.push_back(newBullet); // gameSceneのAddEnemyBulletを使いnewBulletを登録する
 }
 
@@ -135,4 +131,5 @@ void Enemy::moveApproachInitialize() { fireTimer = kFireInterval; }
 
 void Enemy::OnCollision(){};
 
-void Enemy::SetPlayer(Player* player) { player_ = player; };
+void Enemy::SetPlayer(Player* player) { player_ = player; }
+void Enemy::SetGameScene(GameScene* gameScene){ gameScene_ = gameScene; }

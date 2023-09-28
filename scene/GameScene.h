@@ -13,6 +13,8 @@
 #include "WorldTransform.h"
 #include "Skydome.h"
 #include "RailCamera.h"
+#include <sstream>
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -49,6 +51,11 @@ public: // メンバ関数
 	//弾の登録
 	void AddEnemyBullet(EnemyBullet* enemyBuullet);
 
+	void LoadEnemyPopData();
+
+	void UpdateEnemyPopCommands();
+
+	void EnemyPopUP(Vector3 position);
 
 	/*void EnemyInitialize(Model* model, uint32_t textureHandle);
 	void EnemyDraw(ViewProjection& viewProjection);
@@ -74,7 +81,7 @@ private: // メンバ変数
 	Model* model_;
 	//機体
 	Player* player_ = nullptr;
-	Enemy* enemy_ = nullptr;
+	//Enemy* enemy_ = nullptr;
 	//デバッグ用カメラ
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
@@ -88,6 +95,9 @@ private: // メンバ変数
 	//nullにする意味はエラーを確認するため
 	//孤立した移籍メンバーのリスト君
 	std::list<EnemyBullet*> enemyBullets_;
+	std::list<Enemy*> enemies_;
+
+	std::stringstream enemyPopCommands;
 
 	/// <summary>
 	/// ゲームシーン用
