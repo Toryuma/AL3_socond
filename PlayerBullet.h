@@ -18,6 +18,8 @@ public:
 
 	float GetRadius();
 
+	Vector3 GetVelocity();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

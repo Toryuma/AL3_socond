@@ -12,6 +12,8 @@
 
 ********************************************************/
 
+//逆の関数も作る//オーバーロードで楽になる
+
 
 #pragma region 行列初期化
 // プロトタイプ宣言
@@ -74,5 +76,13 @@ float Length(const Vector3& v);
 Vector3 Normalize(const Vector3& v);
 //片側vector3片側変数の減算
 Vector3 SubtractOneSideVector3(const Vector3& v3, const int& va);
+
+/// <summary>
+/// ワールド座標からローカル座標に。返す値はVector3
+/// </summary>
+/// <param name="vector"></param>
+/// <param name="matrix"></param>
+/// <returns></returns>
+Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 #pragma endregion

@@ -39,3 +39,5 @@ void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 }
 
 void PlayerBullet::OnCollision() { isDead_ =true; }
+
+Vector3 PlayerBullet::GetVelocity() { return velocity_; }

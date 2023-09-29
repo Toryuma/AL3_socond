@@ -25,12 +25,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetWorldPosition();
+
+	Vector3 GetWorldPosition3DReticle();
+	
 	/// <summary>
 	/// 更新。彼女いない歴=年齢は常に更新されています。彼女募集。
 	/// </summary>
-	
-	
-
 	void Update();
 	/// <summary>
 	/// 描画。絵描けると女性との話題に意外と困らない。最重要案件
@@ -57,11 +57,16 @@ public:
 	void SetParent(const WorldTransform* parent);
 
 private:
+	// プレイヤーのワールドトランスフォース
 	WorldTransform worldTransform_;
+	
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 	Input* input_ = nullptr;
 	const float radius_ = 4.0f;
+	
+	// レティクル用
+	WorldTransform worldTransform3DReticle_;
 
 	/*PlayerBullet* bullet_;*/
 	std::list<PlayerBullet*> bullets_;

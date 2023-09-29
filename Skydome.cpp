@@ -13,7 +13,7 @@ void Skydome::Initialize(Model* model, uint32_t textureHandle) {
 
 	worldTransform_.Initialize();
 	input_ = Input::GetInstance();
-	worldTransform_.scale_ = {40.0f, 40.0f, 40.0f};
+	worldTransform_.scale_ = {60.0f, 60.0f, 60.0f};
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
 	// 行列の更新(アフィン変換)、GPU転送(シェーダーに)

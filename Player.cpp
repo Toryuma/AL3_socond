@@ -15,7 +15,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosi
 	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 	worldTransform_.translation_ = playerPosition;
-
+	worldTransform3DReticle_.Initialize();
 }
 
 void Player::Attack() {
@@ -27,10 +27,35 @@ void Player::Attack() {
 
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
+		//登録前に角度計算
+		velocity = Subtract(GetWorldPosition3DReticle(), GetWorldPosition());
+		velocity = Multiply(kBulletSpeed,Normalize(velocity));
+
+		//弾の登録
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 		bullets_.push_back(newBullet);
+		GetWorldPosition(); // プレイヤーのワールド座標	
+		GetWorldPosition3DReticle();
+		
+		/*
+			Vector3 worldPos;
+
+			worldPos.x = worldTransform_.matWorld_.m[3][0];
+			worldPos.y = worldTransform_.matWorld_.m[3][1];
+			worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+			Vector3 world3DPos;
+
+			world3DPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
+			world3DPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
+			world3DPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+			Subtract(world3DPos, worldPos);
+		*/
 	}
+
+	
 }
 
 Vector3 Player::GetWorldPosition() {
@@ -41,6 +66,15 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+Vector3 Player::GetWorldPosition3DReticle() {
+	Vector3 world3DPos;
+
+	world3DPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
+	world3DPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
+	world3DPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+	return world3DPos;
 }
 
 //半径のゲッター
@@ -152,6 +186,18 @@ void Player::Update() {
 	worldTransform_.translation_.y = playerPos[1];
 	worldTransform_.translation_.z = playerPos[2];
 	ImGui::End();
+
+	{ 
+		const float kDistancePlayerTo3DReticle = 50.0f;
+		Vector3 offset = {0, 0, 1.0f};
+
+		offset = TransformNormal(offset, worldTransform_.matWorld_);
+		offset = Multiply(kDistancePlayerTo3DReticle, Normalize(offset));
+		worldTransform3DReticle_.translation_ = Add(worldTransform_.translation_,offset);
+		
+		worldTransform3DReticle_.UpdateMatrix();
+
+	}
 }
 
 void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
@@ -168,6 +214,8 @@ void Player::Draw(ViewProjection& viewProjection) {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
+
+	model_->Draw(worldTransform3DReticle_, viewProjection);
 }
 
 Player::~Player() {
